@@ -1,0 +1,40 @@
+services:
+  discord-mysql:
+    container_name: discord-mysql
+    image: mysql:8
+    ports:
+      - 3307:3306
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Seoul
+    restart: always
+    volumes:
+      - mysqlvolume:/var/lib/mysql
+    networks:
+      - discord-bot
+
+  discord-redis:
+    container_name: discord-redis
+    image: redis
+    ports:
+      - 6380:6379
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: redis-server --requirepass "$${REDIS_PASSWORD}" --port 6379
+    env_file:
+      - .env
+    networks:
+      - discord-bot
+    restart: on-failure
+
+volumes:
+  mysqlvolume:
+
+networks:
+  discord-bot:
+    external: true
+    name: discord-bot
