@@ -50,8 +50,9 @@ jobs:
           DOCKER_IMAGE="${{env.ECR_URI}}:${DOCKER_TAG}"
           echo "dockerTag=${DOCKER_TAG}" 
           echo "DOCKER_IMAGE=${DOCKER_IMAGE}"
-          echo "DOCKER_TAG=${DOCKER_TAG}"  >> $GITHUB_ENV
-          echo "DOCKER_TAG=${DOCKER_TAG}"  >> $GITHUB_OUTPUT
+          echo "DOCKER_TAG=${DOCKER_TAG}" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -86,8 +87,7 @@ jobs:
     name: Deploy
     runs-on: [self-hosted, server]
     env:
-      DOCKER_TAG: ${{needs.gardle-docker-build.outputs.DOCKER_TAG}}
-
+      DOCKER_TAG: ${{needs.gradle-docker-build.outputs.DOCKER_TAG}}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -105,4 +105,4 @@ jobs:
         id: execute
         run: |
           docker stop ${{env.NAME}} && docker rm ${{env.NAME}}
-          docker run -d -p 8080:8080 --name ${{env.NAME}} --network discord-bot "${{env.ECR_URI}}:${{env.DOCKER_TAG}}"
+            docker run -d -p 8080:8080 --name ${{env.NAME}} --network discord-bot "${{env.ECR_URI}}:${{env.DOCKER_TAG}}"
