@@ -41,4 +41,8 @@ public class TotalStudyEmbedMessageUtils {
         }
         return eb.build();
     }
+
+    // 인스턴스화 방지 private
+    private TotalStudyEmbedMessageUtils() {
+    }
 }
