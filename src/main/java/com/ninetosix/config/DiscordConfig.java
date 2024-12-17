@@ -30,7 +30,7 @@ public class DiscordConfig {
     public JDA jda() {
         EnumSet<GatewayIntent> settings = EnumSet.of(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.MESSAGE_CONTENT);
 
-        return JDABuilder.create(DISCORD_TOKEN, settings)
+        return JDABuilder.createDefault(DISCORD_TOKEN, settings)
                 .addEventListeners(voiceStatusListener())
                 .addEventListeners(messageListener())
                 .addEventListeners(commandListener())

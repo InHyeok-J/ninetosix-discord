@@ -13,7 +13,7 @@ services:
       - TZ=Asia/Seoul
     restart: always
     volumes:
-      - mysqlvolume:/var/lib/mysql
+      - mysqlvolume-discord:/var/lib/mysql
     networks:
       - discord-bot
 
@@ -24,7 +24,7 @@ services:
       - 6380:6379
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
-    command: redis-server --requirepass "$${REDIS_PASSWORD}" --port 6379
+    command: redis-server --requirepass "${REDIS_PASSWORD}" --port 6379
     env_file:
       - .env
     networks:
@@ -32,7 +32,7 @@ services:
     restart: on-failure
 
 volumes:
-  mysqlvolume:
+  mysqlvolume-discord:
 
 networks:
   discord-bot:
